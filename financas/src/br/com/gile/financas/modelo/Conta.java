@@ -1,4 +1,4 @@
-package br.com.gile.modelo;
+package br.com.gile.financas.modelo;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
