@@ -1,5 +1,9 @@
 package br.com.gile.financas.teste;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 import br.com.gile.financas.modelo.Conta;
 
 public class TesteConta {
@@ -10,8 +14,14 @@ public class TesteConta {
 		conta.setBanco("Nubank");
 		conta.setNumero("456");
 		
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("financas");
+		EntityManager em = emf.createEntityManager();
 		
+		em.getTransaction().begin();
+		em.persist(conta);
+		em.getTransaction().commit();
 		
-		
+		em.close();
+		emf.close();
 	}
 }
