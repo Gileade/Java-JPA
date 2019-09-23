@@ -27,6 +27,11 @@ public class TesteJPARelacionamento {
 		em.getTransaction().begin();
 		
 		//Primeiro deve ser criada a conta no banco
+		/*
+		 * Ou pode ser usado por exemplo conta.setid (id existente no banco)
+		 * movimentacao.setConta(conta)
+		 * E depois persistido somente a movimentação, porém com um id existente no banco
+		 */
 		em.persist(conta);
 		//Depois será usada na movimentação
 		em.persist(movimentacao);
