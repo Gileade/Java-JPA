@@ -12,6 +12,7 @@
 
         <!-- Aqui são listadas todas as entidades -->
         <class>br.com.gile.financas.modelo.Conta</class>
+		<class>br.com.gile.financas.modelo.Movimentacao</class>
 
         <properties>    
             <!-- Propriedades JDBC -->
