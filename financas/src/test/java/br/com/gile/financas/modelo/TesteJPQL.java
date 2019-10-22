@@ -14,14 +14,21 @@ public class TesteJPQL {
 		EntityManager em = new JPAUtil().getEntityManager();
 		em.getTransaction().begin();
 		
-		String jpql = "select m from Movimentacao m where m.conta.id = 2";
+		Conta conta = new Conta();
+		conta.setId(2);
+		
+		String jpql = "select m from Movimentacao m where m.conta = :pConta"
+				+ " and m.tipoMovimentacao = :pTipo"
+				+ " order by m.valor desc";
 		Query query = em.createQuery(jpql);
+		query.setParameter("pConta", conta);
+		query.setParameter("pTipo", TipoMovimentacao.SAIDA);
 		
 		List<Movimentacao> resultados = query.getResultList();
 		
 		for (Movimentacao movimentacao : resultados) {
 			System.out.println("Descrição: "+ movimentacao.getDescricao());
-			System.out.println("Conta.id"+movimentacao.getConta().getId());
+			System.out.println("Conta.id: "+movimentacao.getConta().getId());
 		}
 		
 		em.getTransaction().commit();
