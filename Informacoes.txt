@@ -1,0 +1,55 @@
+Pra começar, é necessário:
+    => Inserir o arquivo persistence.xml do Hibernate numa pasta META-INF;
+        => No persistence, deve ter o nome do BD, login e senha;
+    => Link para utilizar 2 bancos (https://blog.caelum.com.br/acessando-multiplos-bancos-de-dados-com-jpa-e-cdi/)
+
+    => Para utilizar, sempre é necessário criar um EntityManager, que precisa de um EntityManagerFactory, exemplo de classe JPAUtil:
+        package br.com.gile.financas.util;
+        import javax.persistence.EntityManager;
+        import javax.persistence.EntityManagerFactory;
+        import javax.persistence.Persistence;
+
+        public class JPAUtil {
+
+            private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("financas");
+            
+            public EntityManager getEntityManager() {
+                return emf.createEntityManager();
+            }
+        }
+
+    => Para utilizar:
+    EntityManager em = new JPAUtil().getEntityManager();
+	em.getTransaction().begin();
+	
+
+    em.getTransaction().commit();
+	em.close();
+
+    => Para gravar: em.persist(cliente);
+	=> Para buscar: 
+        //Para buscar um id no banco
+		Conta conta = em.find(Conta.class, 1);
+	=> Para alterar	
+        //Como está no estado de Managed, altera também no banco
+		conta.setTitular("João");
+		conta.setAgencia("789");
+		
+    => Para escrever JPQL:
+        => Escreve o JPQL: 
+            String jpql = "select m from Movimentacao m where m.conta = :pConta"
+	                		+ " and m.tipoMovimentacao = :pTipo"
+			                + " order by m.valor desc";
+        => Cria um objeto Query com o comando:
+            Query query = em.createQuery(jpql);
+		=> Caso necessário, informa os parâmetros:
+            query.setParameter("pConta", conta);
+		    query.setParameter("pTipo", TipoMovimentacao.SAIDA);
+		=> Caso retorne várias informações
+            List<Movimentacao> resultados = query.getResultList();
+		
+            for (Movimentacao movimentacao : resultados) {
+                System.out.println("Descrição: "+ movimentacao.getDescricao());
+                System.out.println("Conta.id: "+movimentacao.getConta().getId());
+            }
+        

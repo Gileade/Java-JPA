@@ -15,5 +15,8 @@ public class TesteMovimentacaoConta {
 		
 		System.out.println(conta.getTitular());
 		System.out.println(conta.getMovimentacoes().size());
+		
+		em.getTransaction().commit();
+		em.close();
 	}
 }
