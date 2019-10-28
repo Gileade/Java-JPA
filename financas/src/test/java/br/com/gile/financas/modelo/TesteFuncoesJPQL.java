@@ -15,7 +15,7 @@ public class TesteFuncoesJPQL {
 		em.getTransaction().begin();
 		
 		Conta conta = new Conta();
-		conta.setId(2);
+		conta.setId(5);
 		
 		String jpql = "select sum(m.valor) from Movimentacao m where m.conta = :pConta"
 				+ " and m.tipoMovimentacao = :pTipo"
