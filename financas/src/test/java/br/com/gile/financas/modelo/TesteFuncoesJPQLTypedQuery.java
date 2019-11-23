@@ -3,7 +3,7 @@ package br.com.gile.financas.modelo;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import br.com.gile.financas.util.JPAUtil;
 
@@ -20,7 +20,7 @@ public class TesteFuncoesJPQLTypedQuery {
 				+ " and m.tipoMovimentacao = :pTipo"
 				+ " group by day(m.data), month(data), year(data)";
 		
-		Query query = em.createQuery(jpql);
+		TypedQuery<Double> query = em.createQuery(jpql,Double.class);
 		query.setParameter("pConta", conta);
 		query.setParameter("pTipo", TipoMovimentacao.SAIDA);
 		
