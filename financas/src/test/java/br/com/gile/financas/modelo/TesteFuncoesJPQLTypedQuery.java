@@ -3,8 +3,8 @@ package br.com.gile.financas.modelo;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 
+import br.com.gile.financas.dao.MovimentacaoDao;
 import br.com.gile.financas.util.JPAUtil;
 
 public class TesteFuncoesJPQLTypedQuery {
@@ -16,18 +16,12 @@ public class TesteFuncoesJPQLTypedQuery {
 		Conta conta = new Conta();
 		conta.setId(2);
 		
-		String jpql = "select avg(m.valor) from Movimentacao m where m.conta = :pConta"
-				+ " and m.tipoMovimentacao = :pTipo"
-				+ " group by day(m.data), month(data), year(data)";
+		MovimentacaoDao dao = new MovimentacaoDao(em);
+		List<Double> medias = dao.getMediasPorDiaETipo(TipoMovimentacao.SAIDA, conta);
 		
-		TypedQuery<Double> query = em.createQuery(jpql,Double.class);
-		query.setParameter("pConta", conta);
-		query.setParameter("pTipo", TipoMovimentacao.SAIDA);
-		
-		List<Double> medias = (List<Double>) query.getResultList();
-		
-		System.out.println("A média do dia 21 é: "+ medias.get(0));
-		System.out.println("A média do dia 22 é: "+ medias.get(1));
+		for (Double media : medias) {
+			System.out.println("A média é: "+ media);	
+		}
 		
 		em.getTransaction().commit();
 		em.close();
